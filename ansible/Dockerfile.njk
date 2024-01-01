@@ -52,18 +52,19 @@ RUN if [ "${PUBLISHER_LIB_VERSION}" = "master" ]; then \
     fi
 
 {% for app in publisher.apps %}
-# Build the main app configured in the docker-compose.yml
 RUN  git clone {{app.repo}} \
-    # replace my-edition with name of your app
     && cd {{app.name}} \
-    {% if app.tag_or_branch %}
+    {% if app.tag_or_branch is defined and app.tag_or_branch %}
     && echo Checking out {{app.tag_or_branch}} \
     && git checkout {{app.tag_or_branch}} \
     {% endif %}
-    {% if app.local_webcomponents %}
+    {% if app.local_webcomponents is defined and app.local_webcomponents %}
     && sed -i 's/$config:webcomponents :=.*;/$config:webcomponents := "local";/' modules/config.xqm \
     {% endif %}
-    && ant {% if app.local_webcomponents %}xar-local{% endif %}
+    && ant {% if app.local_webcomponents is defined and app.local_webcomponents %}xar-local{% endif %}
+    {% raw %}
+
+    {% endraw %}
 {% endfor %}
 
 RUN curl -L -o /tmp/roaster-${ROUTER_VERSION}.xar http://exist-db.org/exist/apps/public-repo/public/roaster-${ROUTER_VERSION}.xar

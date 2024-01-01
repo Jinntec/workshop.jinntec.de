@@ -3,7 +3,7 @@ dest: /root/docker
 # which optional services should be started?
 services:
   # IIIF image service
-  iiif: true
+  iiif: false
   # Named entity recognition
   ner: true
 # the domains to be served by the proxy. Each domain may map to a different app and root path
@@ -13,7 +13,7 @@ domains:
     # eXist-db path the root of the server will be mapped to. Specifying a path here
     # will map the root to one single app. Change to empty string ("") if you want to expose the
     # entire database and also set CONTEXT_PATH=auto below.
-    root: /exist/apps/tei-publisher
+    root: ""
     # root: ""
     # the name the server should listen to
     hostname: dev.tei-publisher.com
@@ -34,14 +34,36 @@ publisher:
     # Name of the custom app to include - should correspond to the name of the repository
     - name: "tei-publisher-app"
       # Tag or branch to build
-      tag_or_branch: "v8.0.0"
+      tag_or_branch: "master"
       # GIT repository to clone the app from
       repo: "https://github.com/eeditiones/tei-publisher-app.git"
       # enable to embed webcomponents in the app instead of using external CDN
       local_webcomponents: true
+    - name: "shakespeare"
+      tag_or_branch: "master"
+      repo: "https://github.com/eeditiones/shakespeare.git"
+      local_webcomponents: true
+    - name: "vangogh"
+      tag_or_branch: "master"
+      repo: "https://github.com/eeditiones/vangogh.git"
+      local_webcomponents: true
+    - name: "dodis-wall"
+      tag_or_branch: "master"
+      repo: "https://github.com/eeditiones/dodis-wall.git"
+      local_webcomponents: true
+    - name: "eebo-data"
+      repo: "https://github.com/eeditiones/eebo-data.git"
+    - name: "eebo"
+      tag_or_branch: "master"
+      repo: "https://github.com/eeditiones/eebo.git"
+      local_webcomponents: true
+    - name: "tei-publisher-home"
+      repo: "https://tei-publisher-home:{{GITLAB_TOKEN}}@gitlab.existsolutions.com/tei-publisher/tei-publisher-home.git"
+      tag_or_branch: "release-1.2.0"
+      local_webcomponents: false
   # App context path: set to 'auto' if apps should be exposed under its full path 
   # (e.g. /exist/apps/tei-publisher)
-  context_path: ""
+  context_path: "auto"
 cert:
   # should real SSL certificates be requested? set to true during testing to not hit limits
   use_staging: false

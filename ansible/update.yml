@@ -2,10 +2,7 @@
   # Rebuilds everything on the host using the existing Dockerfile and setup
   vars_files:
     - ./variables.yml
-  vars_prompt:
-    - name: admin_pass
-      prompt: Provide a password for the eXist-db admin user
-      default: ""
+    - ./secret.yml
   tasks:
     - name: Stop docker
       ansible.builtin.shell:
