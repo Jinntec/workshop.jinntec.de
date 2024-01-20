@@ -59,6 +59,8 @@
           loop:
             - { src: "{{playbook_dir}}/Dockerfile.generated", dest: "{{dest}}/Dockerfile" }
             - { src: "{{playbook_dir}}/docker-compose.yml.generated", dest: "{{dest}}/docker-compose.yml" }
+      tags:
+        - copy
     - name: Create nginx configs
       ansible.builtin.template:
         src: "{{ item.src }}"

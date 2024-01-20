@@ -39,6 +39,7 @@ publisher:
       repo: "https://github.com/eeditiones/tei-publisher-app.git"
       # enable to embed webcomponents in the app instead of using external CDN
       local_webcomponents: true
+      prebuild: sed -i 's/password="simple"/password="{{APP_PASSWD}}"/' repo.xml.tmpl
     - name: "shakespeare"
       tag_or_branch: "master"
       repo: "https://github.com/eeditiones/shakespeare.git"
