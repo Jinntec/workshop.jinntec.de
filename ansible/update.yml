@@ -35,6 +35,13 @@
       delay: 10
       tags:
         - password
+    - name: Set app password
+      ansible.builtin.shell:
+        cmd: docker compose exec publisher java org.exist.start.Main client -x 'sm:passwd("tei", "{{APP_PASSWD}}")'
+        chdir: "{{dest}}"
+      when: APP_PASSWD is defined and APP_PASSWD != ''
+      tags:
+        - password
     - name: Set admin password
       ansible.builtin.shell:
         cmd: docker compose exec publisher java org.exist.start.Main client -x 'sm:passwd("admin", "{{ADMIN_PASSWD}}")'
