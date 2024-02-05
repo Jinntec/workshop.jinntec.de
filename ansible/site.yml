@@ -16,7 +16,7 @@
       ignore_errors: true
     - name: Prune volumes
       ansible.builtin.shell:
-        cmd: docker volume prune -a -f
+        cmd: docker volume prune -f
         chdir: "{{dest}}"
       when: avail.stat.isdir is defined and avail.stat.isdir
       ignore_errors: true
@@ -98,9 +98,9 @@
         - password
     - name: Set admin password
       ansible.builtin.shell:
-        cmd: docker compose exec publisher java org.exist.start.Main client -x 'sm:passwd("admin", "{{admin.password}}")'
+        cmd: docker compose exec publisher java org.exist.start.Main client -x 'sm:passwd("admin", "{{ADMIN_PASSWD}}")'
         chdir: "{{dest}}"
-      when: admin.password is defined and admin.password != ''
+      when: ADMIN_PASSWD is defined and ADMIN_PASSWD != ''
       tags:
         - password
     - name: Acquire certificates
