@@ -66,6 +66,9 @@ publisher:
       tag_or_branch: "master"
       repo: "https://github.com/eeditiones/eebo.git"
       local_webcomponents: true
+    - name: "serafin"
+      tag_or_branch: "main"
+      repo: "https://github.com/mikolajserafin/serafin7.git"
     - name: "tei-publisher-home"
       repo: "https://tei-publisher-home:{{GITLAB_TOKEN}}@gitlab.existsolutions.com/tei-publisher/tei-publisher-home.git"
       tag_or_branch: "release-1.2.0"
