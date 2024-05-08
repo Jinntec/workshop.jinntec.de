@@ -28,7 +28,10 @@ domains:
       enable: true
       urls:
         # cache pdf, epub, print HTML output in test and doc collections
-        - /api/document/(test|doc|jats).*/(pdf|epub|print|tex)$
+        - /tei-publisher/api/document/(test|doc|jats).*/(pdf|epub|print|tex)$
+        - /shakespeare-pm/api/document/.*/(pdf|epub|print|tex)$
+        - /dodis-facets/api/document/.*/(pdf|epub|print|tex)$
+        - /eebo/api/document/.*/(pdf|epub|print|tex)$
       expires: 1d
   - name: teipublisher
     # eXist-db path the root of the server will be mapped to. Specifying a path here
