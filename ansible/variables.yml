@@ -17,6 +17,19 @@ domains:
     # root: ""
     # the name the server should listen to
     hostname: tei-publisher.com
+    # settings for the proxy cache. If enabled, requests to content in reading view will be cached
+    # unless they have been changed. To detect changes, you must set `caching_support: true` in the
+    # publisher section below.
+    #
+    # In addition you may want to cache other requests by adding them to the list in `urls`. Those
+    # requests will be statically cached for the duration specified in `expires`.
+    cache:
+      # enable caching
+      enable: true
+      urls:
+        # cache pdf, epub, print HTML output in test and doc collections
+        - /api/document/(test|doc|jats).*/(pdf|epub|print|tex)$
+      expires: 1d
   - name: teipublisher
     # eXist-db path the root of the server will be mapped to. Specifying a path here
     # will map the root to one single app. Change to empty string ("") if you want to expose the
@@ -25,6 +38,22 @@ domains:
     # root: ""
     # the name the server should listen to
     hostname: teipublisher.com
+    # settings for the proxy cache. If enabled, requests to content in reading view will be cached
+    # unless they have been changed. To detect changes, you must set `caching_support: true` in the
+    # publisher section below.
+    #
+    # In addition you may want to cache other requests by adding them to the list in `urls`. Those
+    # requests will be statically cached for the duration specified in `expires`.
+    cache:
+      # enable caching
+      enable: true
+      urls:
+        # cache pdf, epub, print HTML output in test and doc collections
+        - /tei-publisher/api/document/(test|doc|jats).*/(pdf|epub|print|tex)$
+        - /shakespeare-pm/api/document/.*/(pdf|epub|print|tex)$
+        - /dodis-facets/api/document/.*/(pdf|epub|print|tex)$
+        - /eebo/api/document/.*/(pdf|epub|print|tex)$
+      expires: 7d
 publisher:
   build:
     # directory or repository URL containing the Dockerfile to build publisher from
@@ -76,6 +105,9 @@ publisher:
   # App context path: set to 'auto' if apps should be exposed under its full path 
   # (e.g. /exist/apps/tei-publisher)
   context_path: "auto"
+  # support cache revalidation: if set, TEI Publisher will respond to the If-Modified-Since header.
+  # needed if you enable caching in the proxy section above.
+  caching_support: true
 cert:
   # should real SSL certificates be requested? set to true during testing to not hit limits
   use_staging: false
