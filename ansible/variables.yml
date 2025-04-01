@@ -5,18 +5,18 @@ services:
   # IIIF image service
   iiif: false
   # Named entity recognition
-  ner: true
+  ner: false
 # the domains to be served by the proxy. Each domain may map to a different app and root path
 # within the same eXist-db instance
 domains:
-  - name: tei-publisher
+  - name: workshop.jinntec.de
     # eXist-db path the root of the server will be mapped to. Specifying a path here
     # will map the root to one single app. Change to empty string ("") if you want to expose the
     # entire database and also set CONTEXT_PATH=auto below.
     root: ""
     # root: ""
     # the name the server should listen to
-    hostname: tei-publisher.com
+    hostname: workshop.jinntec.de
     # settings for the proxy cache. If enabled, requests to content in reading view will be cached
     # unless they have been changed. To detect changes, you must set `caching_support: true` in the
     # publisher section below.
@@ -25,86 +25,7 @@ domains:
     # requests will be statically cached for the duration specified in `expires`.
     cache:
       # enable caching
-      enable: true
-      urls:
-        # cache pdf, epub, print HTML output in test and doc collections
-        - /tei-publisher/api/document/(test|doc|jats).*/(pdf|epub|print|tex)$
-        - /shakespeare-pm/api/document/.*/(pdf|epub|print|tex)$
-        - /dodis-facets/api/document/.*/(pdf|epub|print|tex)$
-        - /eebo/api/document/.*/(pdf|epub|print|tex)$
-      expires: 1d
-  - name: www.tei-publisher
-    # eXist-db path the root of the server will be mapped to. Specifying a path here
-    # will map the root to one single app. Change to empty string ("") if you want to expose the
-    # entire database and also set CONTEXT_PATH=auto below.
-    root: ""
-    # root: ""
-    # the name the server should listen to
-    hostname: www.tei-publisher.com
-    # settings for the proxy cache. If enabled, requests to content in reading view will be cached
-    # unless they have been changed. To detect changes, you must set `caching_support: true` in the
-    # publisher section below.
-    #
-    # In addition you may want to cache other requests by adding them to the list in `urls`. Those
-    # requests will be statically cached for the duration specified in `expires`.
-    cache:
-      # enable caching
-      enable: true
-      urls:
-        # cache pdf, epub, print HTML output in test and doc collections
-        - /tei-publisher/api/document/(test|doc|jats).*/(pdf|epub|print|tex)$
-        - /shakespeare-pm/api/document/.*/(pdf|epub|print|tex)$
-        - /dodis-facets/api/document/.*/(pdf|epub|print|tex)$
-        - /eebo/api/document/.*/(pdf|epub|print|tex)$
-      expires: 1d
-  - name: teipublisher
-    # eXist-db path the root of the server will be mapped to. Specifying a path here
-    # will map the root to one single app. Change to empty string ("") if you want to expose the
-    # entire database and also set CONTEXT_PATH=auto below.
-    root: ""
-    # root: ""
-    # the name the server should listen to
-    hostname: teipublisher.com
-    # settings for the proxy cache. If enabled, requests to content in reading view will be cached
-    # unless they have been changed. To detect changes, you must set `caching_support: true` in the
-    # publisher section below.
-    #
-    # In addition you may want to cache other requests by adding them to the list in `urls`. Those
-    # requests will be statically cached for the duration specified in `expires`.
-    cache:
-      # enable caching
-      enable: true
-      urls:
-        # cache pdf, epub, print HTML output in test and doc collections
-        - /tei-publisher/api/document/(test|doc|jats).*/(pdf|epub|print|tex)$
-        - /shakespeare-pm/api/document/.*/(pdf|epub|print|tex)$
-        - /dodis-facets/api/document/.*/(pdf|epub|print|tex)$
-        - /eebo/api/document/.*/(pdf|epub|print|tex)$
-      expires: 7d
-  - name: www.teipublisher
-    # eXist-db path the root of the server will be mapped to. Specifying a path here
-    # will map the root to one single app. Change to empty string ("") if you want to expose the
-    # entire database and also set CONTEXT_PATH=auto below.
-    root: ""
-    # root: ""
-    # the name the server should listen to
-    hostname: www.teipublisher.com
-    # settings for the proxy cache. If enabled, requests to content in reading view will be cached
-    # unless they have been changed. To detect changes, you must set `caching_support: true` in the
-    # publisher section below.
-    #
-    # In addition you may want to cache other requests by adding them to the list in `urls`. Those
-    # requests will be statically cached for the duration specified in `expires`.
-    cache:
-      # enable caching
-      enable: true
-      urls:
-        # cache pdf, epub, print HTML output in test and doc collections
-        - /tei-publisher/api/document/(test|doc|jats).*/(pdf|epub|print|tex)$
-        - /shakespeare-pm/api/document/.*/(pdf|epub|print|tex)$
-        - /dodis-facets/api/document/.*/(pdf|epub|print|tex)$
-        - /eebo/api/document/.*/(pdf|epub|print|tex)$
-      expires: 7d
+      enable: false      
 publisher:
   build:
     # directory or repository URL containing the Dockerfile to build publisher from
@@ -128,37 +49,12 @@ publisher:
       # enable to embed webcomponents in the app instead of using external CDN
       local_webcomponents: true
       prebuild: sed -i 's/password="simple"/password="{{APP_PASSWD}}"/' repo.xml.tmpl
-    - name: "shakespeare"
-      tag_or_branch: "master"
-      repo: "https://github.com/eeditiones/shakespeare.git"
-      local_webcomponents: true
-    - name: "vangogh"
-      tag_or_branch: "master"
-      repo: "https://github.com/eeditiones/vangogh.git"
-      local_webcomponents: true
-    - name: "dodis-wall"
-      tag_or_branch: "master"
-      repo: "https://github.com/eeditiones/dodis-wall.git"
-      local_webcomponents: true
-    - name: "eebo-data"
-      repo: "https://github.com/eeditiones/eebo-data.git"
-    - name: "eebo"
-      tag_or_branch: "master"
-      repo: "https://github.com/eeditiones/eebo.git"
-      local_webcomponents: true
-    - name: "serafin7"
-      tag_or_branch: "main"
-      repo: "https://github.com/mikolajserafin/serafin7.git"
-    - name: "tei-publisher-home"
-      repo: "https://tei-publisher-home:{{GITLAB_TOKEN}}@gitlab.existsolutions.com/tei-publisher/tei-publisher-home.git"
-      tag_or_branch: "release-1.2.0"
-      local_webcomponents: false
   # App context path: set to 'auto' if apps should be exposed under its full path 
   # (e.g. /exist/apps/tei-publisher)
   context_path: "auto"
   # support cache revalidation: if set, TEI Publisher will respond to the If-Modified-Since header.
   # needed if you enable caching in the proxy section above.
-  caching_support: true
+  caching_support: false
 cert:
   # should real SSL certificates be requested? set to true during testing to not hit limits
   use_staging: false
