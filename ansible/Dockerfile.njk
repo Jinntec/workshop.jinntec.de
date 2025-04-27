@@ -50,6 +50,17 @@ RUN if [ "${PUBLISHER_LIB_VERSION}" = "master" ]; then \
     else \
         curl -L -o /tmp/tei-publisher-lib-${PUBLISHER_LIB_VERSION}.xar https://exist-db.org/exist/apps/public-repo/public/tei-publisher-lib-${PUBLISHER_LIB_VERSION}.xar; \
     fi
+#Build jinks templates
+RUN git clone https://github.com/eeditiones/jinks-templates.git \
+    && cd jinks-templates \
+    && ant \
+    && cp build/*.xar /tmp;
+
+#Build jinks
+RUN git clone https://github.com/eeditiones/jinks.git \
+    && cd jinks \
+    && ant \
+    && cp build/*.xar /tmp;
 
 {% for app in publisher.apps %}
 RUN  git clone {{app.repo}} \
